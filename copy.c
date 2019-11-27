@@ -18,15 +18,14 @@ int main(int argc, const char *argv[])
     ptrace(PTRACE_TRACEME);
     if (argc < 3 || argc > 3)
         error("usage: copy [FILE1] [FILE2]");
-    else
-	while (--argc > 1) {
-	    if ((ifp = open(*++argv, O_RDONLY)) == -1)
-                error("copy: cannot open %s", *argv);
-            if ((ofp = creat(*++argv, S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR)) == -1)
-                if (unlink(*argv) == -1)
-                    error("copy: cannot overwrite %s", *argv);
-            filecopy(ifp, ofp);
-        }
+    else{
+        if ((ifp = open(*++argv, O_RDONLY)) == -1)
+            error("copy: cannot open %s", *argv);
+        if ((ofp = creat(*++argv, S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR)) == -1)
+            if (unlink(*argv) == -1)
+                error("copy: cannot overwrite %s", *argv);
+        filecopy(ifp, ofp);
+    }
     exit(0);
 }
 
@@ -48,6 +47,6 @@ void filecopy(int ifp, int ofp)
     char buf[BUFSIZ];
 
     while ((n = read(ifp, buf, BUFSIZ)) > 0)
-	if (write(ofp, buf, n) != n)
+        if (write(ofp, buf, n) != n)
             error("copy: write error");
 }

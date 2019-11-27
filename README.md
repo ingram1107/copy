@@ -1,5 +1,5 @@
 # copy
-A trival POSIX API based system util program that copies files.
+A trivial POSIX API based system util program that copies files.
 
 ## Warning
 ### Windows
